@@ -55,4 +55,4 @@ Your assets will be updated in `resources/public` folder.{% if deploy == kamal %
 For detailed deployment instructions, refer to the documentation:
 
 - [Kamal](https://stack.bogoyavlensky.com/docs/lite/kamal)
-{% endif %}
+{% else %}{% endif %}
