@@ -1,7 +1,10 @@
-{:{{main/ns}}.db/db
- {:jdbc-url #profile {{db-config}}}
+{:{{ project-name }}.db/db
+ {:jdbc-url #profile {% case db %}{% when sqlite %}{:default "jdbc:sqlite:db/{{ project-name }}.sqlite"
+                      :test "jdbc:sqlite::memory:"}{% when postgres %}{:default #env DATABASE_URL
+                      :dev "jdbc:postgresql://localhost:5432/localdb?user=test&password=test"
+                      :test "jdbc:tc:postgresql:15.2-alpine3.17:///testdb?TC_DAEMON=true"}{% endcase %}}
 
- :{{main/ns}}.server/server
+ :{{ project-name }}.server/server
  {:options {:port #profile {:default 8000
                             :prod 80
                             :test #free-port true}
@@ -13,4 +16,4 @@
                                     :dev true}
             :cache-assets? #profile {:default false
                                      :prod true}}
-  :db #ig/ref :{{main/ns}}.db/db}}
+  :db #ig/ref :{{ project-name }}.db/db}}
