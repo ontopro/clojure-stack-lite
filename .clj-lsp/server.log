@@ -1,2 +1,0 @@
-[2m2026-05-23T18:04:12.817170Z[0m [33m WARN[0m [2mtower_lsp[0m[2m:[0m Got a workspace/didChangeConfiguration notification, but it is not implemented
-[2m2026-05-23T18:24:06.392749Z[0m [31mERROR[0m [2mtower_lsp[0m[2m:[0m Got a completionItem/resolve request, but it is not implemented
