@@ -1,4 +1,4 @@
-# {{main/ns}}
+# {{ project-name }}
 
 _This application is generated with [clojure-stack-lite](https://github.com/abogoyavlensky/clojure-stack-lite)._
 
@@ -48,4 +48,11 @@ Once you want to update the version of AlpineJS, HTMX or add a new asset, edit v
 bb fetch-assets
 ```
 
-Your assets will be updated in `resources/public` folder.{{readme-deploy-kamal}}
+Your assets will be updated in `resources/public` folder.{% if deploy == kamal %}
+
+## Deployment
+
+For detailed deployment instructions, refer to the documentation:
+
+- [Kamal](https://stack.bogoyavlensky.com/docs/lite/kamal)
+{% endif %}
