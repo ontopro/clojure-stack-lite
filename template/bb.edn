@@ -14,7 +14,11 @@
                 (clojure "-P -X:build")
                 (clojure "-P"))}
 
-  clj-repl {{clj-repl-cmd}}
+  clj-repl {% case db %}{% when sqlite %}{:doc "Run built-in Clojure REPL"
+            :task (shell "clj -A:dev:test")}{% when postgres %}{:doc "Run docker compose and built-in Clojure REPL"
+            :task (do
+                    (shell "docker compose up -d")
+                    (shell "clj -A:dev:test"))}{% endcase %}
 
   fmt-check {:doc "Check code formatting"
              :task (shell "cljfmt" "check")}
@@ -58,11 +62,18 @@
                         [{:url "https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js"
                           :filepath "js/htmx.min.js"}
                          {:url "https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
-                          :filepath "js/alpinejs.min.js"}{{fetch-assets-urls}}])}
+                          :filepath "js/alpinejs.min.js"}{% if daisyui %}
+                         {:url "https://github.com/saadeghi/daisyui/releases/download/v5.0.28/daisyui.js"
+                          :filepath "js/daisyui.js"}
+                         {:url "https://github.com/saadeghi/daisyui/releases/download/v5.0.28/daisyui-theme.js"
+                          :filepath "js/daisyui-theme.js"}{% endif %}])}
 
   build {:doc "Build application uberjar"
          :requires ([manifest-edn.core :as manifest])
          :task (do
                  (run 'css-build)
                  (manifest/hash-assets!)
-                 (clojure "-T:build build"))}{{bb-deploy-kamal}}}}
+                 (clojure "-T:build build"))}{% if deploy == kamal %}
+
+  kamal {:doc "Deploy application using Kamal"
+         :task (apply shell "kamal" (concat *command-line-args* ["--config-file" ".kamal/deploy.yml"]))}{% endif %}}}
