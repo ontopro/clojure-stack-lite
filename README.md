@@ -118,7 +118,8 @@ The template generates a Clojure project with the following structure:
 │       └── views.clj      # HTML templates and components with Hiccup
 ├── test/                  # Test files directory
 │   └── {{name}}           # Test namespace directory
-│       ├── home_test.clj  # Example test for home page
+│       ├── handlers_test.clj      # The pattern to copy: a handler tested as a function of a request map
+│       ├── system_smoke_test.clj  # The one test that boots the whole system; not a pattern to copy
 │       └── test_utils.clj # Test utilities
 ├── .cljfmt.edn            # Formatting configuration
 ├── .gitignore             # Git ignore rules
