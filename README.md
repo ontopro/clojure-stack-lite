@@ -1,5 +1,20 @@
 # Clojure Stack Lite
 
+> **This is [ontopro](https://github.com/ontopro)'s fork of
+> [abogoyavlensky/clojure-stack-lite](https://github.com/abogoyavlensky/clojure-stack-lite)**, kept
+> as the application template that **the KIT** — short for
+> [the Clojure Agent Kit](https://github.com/ontopro/clojure-agent-kit) — brings with it.
+>
+> - **`kit`** (the default branch) is the KIT's line of the template. `git diff master..kit` is
+>   everything it changes, and none of it is specific to the KIT: a generated project is an
+>   ordinary Clojure Stack Lite application.
+> - **`master`** is an untouched mirror of upstream.
+> - **`kit-v1`, `kit-v2`, …** are versions of THIS TEMPLATE as the KIT pins it. They are not
+>   versions of the KIT, and the upstream project's own tags (`0.2.1` …) are left as they came.
+>
+> To use the template on its own, the coordinate is `io.github.ontopro/clojure-stack-lite`. All
+> credit for the template is upstream's; the licence is theirs, MIT, unchanged.
+
 A quick way to start a full-stack Clojure app with server-side rendering. 
 Built on a powerful yet lightweight stack featuring SQLite/PostgreSQL, HTMX, AlpineJS, and TailwindCSS v4.
 
