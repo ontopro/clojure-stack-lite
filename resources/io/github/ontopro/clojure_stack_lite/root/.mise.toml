@@ -1,10 +1,20 @@
+# A KNOWN-GOOD SET, not a set of requirements: these versions were run together on
+# 2026-09-21 (macOS, arm64) against a project generated from this template - format
+# check, lint, tests, and the dev system booted and served. Newer versions are expected
+# to work and are not a fault. The one real constraint is the JDK: stay on 21 (XTDB,
+# an optional store, documents a minimum of 21 and its early v2 releases failed at
+# class-load on newer JDKs). Babashka must be 1.12.212 or newer for bbin.
+#
+# mise is optional. With it: `mise trust && mise install` - which DOWNLOADS a JDK and
+# five tools, through third-party asdf plugins for the last two. If these tools are
+# already on your machine from elsewhere, you do not need to run it.
 [tools]
-java = "temurin-21.0.2+13.0.LTS"
-clojure = "1.12.1.1550"
-babashka = "1.12.206"
-clj-kondo = "2025.06.05"
-cljfmt = "0.13.1"
-tailwindcss = "4.1.11"
+java = "temurin-21"
+clojure = "1.12.6.1673"
+babashka = "1.13.223"
+clj-kondo = "2026.08.04"
+cljfmt = "0.16.5"
+tailwindcss = "4.3.3"
 
 [alias]
 cljfmt = "asdf:https://github.com/b-social/asdf-cljfmt"
