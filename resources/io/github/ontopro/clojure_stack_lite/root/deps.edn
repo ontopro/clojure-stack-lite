@@ -25,6 +25,14 @@
                  :extra-deps {integrant/repl {:mvn/version "0.5.0"}
                               ring/ring-devel {:mvn/version "1.15.3"}}}
 
+           ; A headless nREPL with no editor attached, port chosen by the OS and written to
+           ; .nrepl-port: `clojure -Srepro -M:test:nrepl`. Deliberately WITHOUT the dev path:
+           ; dev/user.clj is what knows how to start the system, so a REPL that cannot see it
+           ; cannot start the web server or the css watcher. One per git worktree is safe.
+           :nrepl {:extra-deps {nrepl/nrepl {:mvn/version "1.7.0"}
+                                org.clojure/test.check {:mvn/version "1.1.3"}}
+                   :main-opts ["-m" "nrepl.cmdline" "--port" "0"]}
+
            :test {:extra-paths ["test"]
                   :extra-deps {eftest/eftest {:mvn/version "0.6.0"}
                                cloverage/cloverage {:mvn/version "1.2.4"}

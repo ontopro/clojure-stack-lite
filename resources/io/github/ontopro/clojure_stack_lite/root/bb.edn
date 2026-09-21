@@ -16,6 +16,20 @@
 
   clj-repl {{clj-repl-cmd}}
 
+  serve {:doc "Start the dev system and serve the app on http://localhost:8000 (Ctrl-C stops it)"
+         ; No editor and no REPL needed: the quickest way to see that the project boots.
+         ; -Srepro keeps a personal ~/.clojure/deps.edn alias of the same name out of :dev and :test.
+         ; The dev system runs `bb css-watch` itself, so the stylesheet is built when tailwindcss is
+         ; installed; without it the app still serves, unstyled, and this says so.
+         :requires ([babashka.fs :as fs])
+         :task (do
+                 (when-not (or (fs/which "tailwindcss") (fs/which "mise"))
+                   (println "tailwindcss is not installed: the app will serve without its stylesheet.")
+                   (println "Install it from https://tailwindcss.com/docs/installation/tailwind-cli and run this again."))
+                 (println "Serving on http://localhost:8000 - Ctrl-C stops it")
+                 (shell "clojure" "-Srepro" "-M:dev:test" "-e"
+                        "(require 'user) (user/reset) @(promise)"))}
+
   fmt-check {:doc "Check code formatting"
              :task (shell "cljfmt" "check")}
 
