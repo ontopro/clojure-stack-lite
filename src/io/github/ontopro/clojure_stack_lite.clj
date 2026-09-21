@@ -1,8 +1,8 @@
-(ns io.github.abogoyavlensky.clojure-stack-lite
+(ns io.github.ontopro.clojure-stack-lite
   (:require [clojure.java.io :as io]))
 
 (def SUBSTITUTIONS-BASE-DIR
-  "io/github/abogoyavlensky/clojure_stack_lite/substitutions/")
+  "io/github/ontopro/clojure_stack_lite/substitutions/")
 
 (def DB-TYPES #{:sqlite :postgres})
 (def DEPLOY-TYPES #{:kamal :none})
