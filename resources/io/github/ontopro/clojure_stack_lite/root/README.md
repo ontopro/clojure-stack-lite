@@ -38,6 +38,13 @@ bb clj-repl
 Once server is started, it will automatically reload on code changes in the backend and TailwindCSS classes.
 The server should be available at `http://localhost:8000`.
 
+## Licence
+
+This project has **no licence yet**: the template does not choose one for you. Until you add a
+`LICENSE` file nobody else has permission to use, copy or change this code, so choose one before
+you publish the repository. [choosealicense.com](https://choosealicense.com) compares the common
+ones.
+
 ## Update assets
 
 The idea is to vendor all js-files in the project repo eliminating build step for js part.

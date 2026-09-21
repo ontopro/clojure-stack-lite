@@ -128,7 +128,6 @@ The template generates a Clojure project with the following structure:
 ├── deps.edn               # Clojure dependencies and aliases
 ├── Dockerfile             # Dockerfile for building the application image
 ├── docker-compose.yaml    # Run PostgreSQL database for local development (only used with PostgreSQL)
-├── LICENSE                # License file, AGPLv3 by default, for motivation check: https://plausible.io/blog/open-source-licenses
 └── README.md              # Project documentation
 ```
 
