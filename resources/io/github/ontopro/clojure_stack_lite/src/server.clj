@@ -94,7 +94,11 @@
         {:exception pretty/exception
          :data {:muuntaja muuntaja-core/instance
                 :coercion coercion-malli/coercion
-                :middleware [not-modified/wrap-not-modified
+                :middleware [; handle exceptions: first, so it catches what any middleware
+                             ; below throws - a body that fails to decode, a failed coercion -
+                             ; as well as what a handler throws
+                             exception-middleware
+                             not-modified/wrap-not-modified
                              content-type/wrap-content-type
                              [default-charset/wrap-default-charset "utf-8"]
                              ring-cookies/wrap-cookies
@@ -115,8 +119,6 @@
                              muuntaja/format-middleware
                              ; check CSRF token
                              anti-forgery/wrap-anti-forgery
-                             ; handle exceptions, a failed coercion's among them
-                             exception-middleware
                              ; coerce request and response to spec
                              reitit-extras/non-throwing-coerce-request-middleware
                              ring-coercion/coerce-response-middleware]}})
