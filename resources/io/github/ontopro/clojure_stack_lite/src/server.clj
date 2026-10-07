@@ -58,11 +58,7 @@
         {:exception pretty/exception
          :data {:muuntaja muuntaja-core/instance
                 :coercion coercion-malli/coercion
-                :middleware [[x-headers/wrap-content-type-options :nosniff]
-                             [x-headers/wrap-frame-options :sameorigin]
-                             ring-ssl/wrap-hsts
-                             reitit-extras/wrap-xss-protection
-                             not-modified/wrap-not-modified
+                :middleware [not-modified/wrap-not-modified
                              content-type/wrap-content-type
                              [default-charset/wrap-default-charset "utf-8"]
                              ring-cookies/wrap-cookies
@@ -95,7 +91,13 @@
         (ring/redirect-trailing-slash-handler)
         (ring/create-default-handler {:not-found (handlers/default-handler "Page not found" 404)
                                       :method-not-allowed (handlers/default-handler "Method not allowed" 405)
-                                      :not-acceptable (handlers/default-handler "Not acceptable" 406)})))))
+                                      :not-acceptable (handlers/default-handler "Not acceptable" 406)}))
+      ; security headers wrap the whole handler, not the routes alone, so a page not found
+      ; and a static file carry them too
+      {:middleware [[x-headers/wrap-content-type-options :nosniff]
+                    [x-headers/wrap-frame-options :sameorigin]
+                    ring-ssl/wrap-hsts
+                    reitit-extras/wrap-xss-protection]})))
 
 (defmethod ig/init-key ::server
   [_ {:keys [options]
