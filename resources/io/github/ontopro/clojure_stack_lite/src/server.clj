@@ -23,6 +23,7 @@
             [ring.middleware.session.cookie :as ring-session-cookie]
             [ring.middleware.ssl :as ring-ssl]
             [ring.middleware.x-headers :as x-headers]
+            [ring.util.response :as response]
             [{{main/ns}}.handlers :as handlers]
             [{{main/ns}}.routes :as app-routes])
   (:import com.zaxxer.hikari.HikariDataSource))
@@ -44,6 +45,16 @@
               [:db [:fn
                     {:error/message "Invalid datasource type"}
                     #(instance? HikariDataSource %)]]]}))
+
+(defn- wrap-referrer-policy
+  "Send only the origin, never the path or query, when a link leaves the site."
+  [handler]
+  (let [add-header #(some-> % (response/header "Referrer-Policy" "strict-origin-when-cross-origin"))]
+    (fn
+      ([request]
+       (add-header (handler request)))
+      ([request respond raise]
+       (handler request #(respond (add-header %)) raise)))))
 
 (defn ring-handler
   "Return main application handler for server-side rendering."
@@ -97,7 +108,8 @@
       {:middleware [[x-headers/wrap-content-type-options :nosniff]
                     [x-headers/wrap-frame-options :sameorigin]
                     ring-ssl/wrap-hsts
-                    reitit-extras/wrap-xss-protection]})))
+                    reitit-extras/wrap-xss-protection
+                    wrap-referrer-policy]})))
 
 (defmethod ig/init-key ::server
   [_ {:keys [options]

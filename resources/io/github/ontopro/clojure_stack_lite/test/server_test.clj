@@ -21,4 +21,5 @@
         (is (= status (:status response)))
         (is (= "nosniff" (get-in response [:headers "X-Content-Type-Options"])))
         (is (= "SAMEORIGIN" (get-in response [:headers "X-Frame-Options"])))
-        (is (some? (get-in response [:headers "Strict-Transport-Security"])))))))
+        (is (some? (get-in response [:headers "Strict-Transport-Security"])))
+        (is (= "strict-origin-when-cross-origin" (get-in response [:headers "Referrer-Policy"])))))))
