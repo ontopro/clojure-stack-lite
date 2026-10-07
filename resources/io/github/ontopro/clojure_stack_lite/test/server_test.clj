@@ -30,6 +30,15 @@
         (is (some? (get-in response [:headers "Strict-Transport-Security"])))
         (is (= "strict-origin-when-cross-origin" (get-in response [:headers "Referrer-Policy"])))))))
 
+(deftest test-the-session-cookie-is-http-only-and-same-site-lax
+  (let [set-cookie (-> ((app) {:request-method :get
+                               :uri "/"})
+                       (get-in [:headers "Set-Cookie"])
+                       (first))]
+    (is (str/starts-with? set-cookie "ring-session="))
+    (is (str/includes? set-cookie "HttpOnly"))
+    (is (str/includes? set-cookie "SameSite=Lax"))))
+
 (defn- answer-from
   "Call `route-handler` behind the server's exception middleware, as the application would."
   [route-handler]

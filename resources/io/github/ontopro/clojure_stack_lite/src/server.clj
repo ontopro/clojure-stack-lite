@@ -100,7 +100,8 @@
                              ring-cookies/wrap-cookies
                              [ring-session/wrap-session
                               {:cookie-attrs {:secure (:cookie-attrs-secure? options)
-                                              :http-only true}
+                                              :http-only true
+                                              :same-site :lax}
                                :flash true
                                :store session-store}]
                              ; add handler options to request
