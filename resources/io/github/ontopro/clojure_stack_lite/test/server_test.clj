@@ -3,7 +3,12 @@
   page not found - called as a function, the way `handlers-test` calls one handler. No server,
   no port, no database: what the middleware adds to a response is seen on the response map.
   An error is tried through the same handler, its routes swapped for one route of the test's
-  own that throws, answers wrongly, or is sent a body it cannot decode - on purpose."
+  own that throws, answers wrongly, or is sent a body it cannot decode - on purpose.
+
+  DO NOT COPY THE ROUTE SWAP FOR ORDINARY TESTS. `with-redefs` replaces the routes for every
+  thread, not this test's alone, and is safe here only because the test runner is
+  single-threaded (`:multithread? false` in deps.edn and dev/user.clj). A handler is tested as a
+  function, the way `handlers-test` does."
   (:require [clojure.string :as str]
             [clojure.test :refer :all]
             [{{main/ns}}.routes :as app-routes]
