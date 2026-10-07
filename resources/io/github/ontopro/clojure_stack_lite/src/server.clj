@@ -135,7 +135,9 @@
       {:middleware [[x-headers/wrap-content-type-options :nosniff]
                     [x-headers/wrap-frame-options :sameorigin]
                     ring-ssl/wrap-hsts
-                    reitit-extras/wrap-xss-protection
+                    ; "0" turns off the XSS filter of the old browsers that still have one: it
+                    ; could be made to strip a page's own scripts. Current browsers have none
+                    [x-headers/wrap-xss-protection false]
                     wrap-referrer-policy]})))
 
 (defmethod ig/init-key ::server
