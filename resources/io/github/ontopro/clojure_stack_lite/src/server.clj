@@ -4,10 +4,12 @@
             [integrant.core :as ig]
             [muuntaja.core :as muuntaja-core]
             [reitit-extras.core :as reitit-extras]
+            [reitit.coercion :as coercion]
             [reitit.coercion.malli :as coercion-malli]
             [reitit.dev.pretty :as pretty]
             [reitit.ring :as ring]
             [reitit.ring.coercion :as ring-coercion]
+            [reitit.ring.middleware.exception :as exception]
             [reitit.ring.middleware.multipart :as ring-multipart]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.parameters :as ring-parameters]
@@ -56,6 +58,29 @@
       ([request respond raise]
        (handler request #(respond (add-header %)) raise)))))
 
+(defn- error-page
+  "An exception handler that answers with the error page and nothing of the exception."
+  [status-code error-text]
+  (fn [_exception request]
+    ((handlers/default-handler error-text status-code) request)))
+
+(defn- log-exception
+  [handler exception request]
+  (log/error exception (pr-str (:request-method request) (:uri request)))
+  (handler exception request))
+
+(def exception-middleware
+  "Catch what a handler throws, log it, and answer with the error page. The response never
+  carries the exception's class, message, data or stack trace, nor a failed coercion's schema
+  or value: they are in the log, which a visitor does not see."
+  (exception/create-exception-middleware
+    (merge exception/default-handlers
+           {::exception/default (error-page 500 "Something went wrong")
+            :muuntaja/decode (error-page 400 "Bad request")
+            ::coercion/request-coercion (error-page 400 "Bad request")
+            ::coercion/response-coercion (error-page 500 "Something went wrong")
+            ::exception/wrap log-exception})))
+
 (defn ring-handler
   "Return main application handler for server-side rendering."
   [{:keys [options]
@@ -89,10 +114,9 @@
                              muuntaja/format-middleware
                              ; check CSRF token
                              anti-forgery/wrap-anti-forgery
-                             ; handle exceptions
-                             reitit-extras/exception-middleware
+                             ; handle exceptions, a failed coercion's among them
+                             exception-middleware
                              ; coerce request and response to spec
-                             ring-coercion/coerce-exceptions-middleware
                              reitit-extras/non-throwing-coerce-request-middleware
                              ring-coercion/coerce-response-middleware]}})
       (ring/routes
