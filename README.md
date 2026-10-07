@@ -9,8 +9,11 @@
 >   everything it changes, and none of it is specific to the KIT: a generated project is an
 >   ordinary Clojure Stack Lite application.
 > - **`master`** is an untouched mirror of upstream.
-> - **`kit-v1`, `kit-v2`, …** are versions of THIS TEMPLATE as the KIT pins it. They are not
+> - **`kit-v1`, `kit-v1.1`, …** are versions of THIS TEMPLATE as the KIT pins it. They are not
 >   versions of the KIT, and the upstream project's own tags (`0.2.1` …) are left as they came.
+>   `kit-v1.1` is `kit-v1` with its security defaults completed: the security headers and a
+>   `Referrer-Policy` on every response, an error page that names nothing of the error, and a
+>   `SameSite=Lax` session cookie.
 >
 > To use the template on its own, the coordinate is `io.github.ontopro/clojure-stack-lite`. All
 > credit for the template is upstream's; the licence is theirs, MIT, unchanged.
