@@ -13,7 +13,9 @@
 >   versions of the KIT, and the upstream project's own tags (`0.2.1` …) are left as they came.
 >   `kit-v1.1` is `kit-v1` with its security defaults completed: the security headers and a
 >   `Referrer-Policy` on every response, an error page that names nothing of the error, and a
->   `SameSite=Lax` session cookie.
+>   `SameSite=Lax` session cookie. `kit-v1.2` is `kit-v1.1` with its dependencies past their
+>   published HIGH advisories - Jetty and Jackson pinned at the top level of `deps.edn` over what
+>   brings them, until those releases catch up - and every GitHub Action pinned to a commit.
 >
 > To use the template on its own, the coordinate is `io.github.ontopro/clojure-stack-lite`. All
 > credit for the template is upstream's; the licence is theirs, MIT, unchanged.
